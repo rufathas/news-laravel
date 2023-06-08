@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "33066:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=hello_tv
+  php_fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm.Dockerfile
+    volumes:
+      - ./:/var/www/laravel-news
+    links:
+      - mysql
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx.Dockerfile
+    ports:
+      - "8050:80"
+    links:
+      - php_fpm
