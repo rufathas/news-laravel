@@ -20,5 +20,4 @@ that's all
 
 in the project you can find a file called _**hello-news(postman dump).json**_.That is json endpoints. You can import it into postman as a collection
 
-
-
+If you want to run unit tests, in environments (.env) change key DB_HOST from mysql to localhost or 127.0.0.1
