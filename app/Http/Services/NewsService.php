@@ -2,10 +2,11 @@
 
 namespace App\Http\Services;
 
-use App\Exceptions\NewsNotFoundException;
 use App\Models\News;
 use App\Models\NewsTranslation;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class NewsService
@@ -27,26 +28,28 @@ class NewsService
             $newsTranslation->description = $languageData["description"];
             $news->translations()->save($newsTranslation);
         }
+        
+        Cache::tags(['all_news'])->flush();
         Log::channel('actionlog')->info("Class: NewsService.insert end");
         return $news;
     }
 
     public function selectAll()
     {
-        return News::all();
+        $currentPage = Paginator::resolveCurrentPage();
+        return  Cache::tags(['all_news'])->remember('all_news_'.$currentPage, env('REDIS_EXPIRE_SECONDS'), function () use ($currentPage) {
+            $perPage = 5;
+            $news = News::paginate($perPage, ['*'], 'page', $currentPage);
+            $news->withPath(route('news.getAll'));
+            return $news;
+        });
     }
 
-    /**
-     * @throws NewsNotFoundException
-     */
     public function selectOne($id)
     {
         return News::findOrFail($id);
     }
 
-    /**
-     * @throws NewsNotFoundException
-     */
     public function update($id, Request $request)
     {
         Log::channel('actionlog')->info("Class: NewsService.update start");
@@ -64,6 +67,7 @@ class NewsService
             }
         }
 
+        Cache::tags(['all_news'])->flush();
         Log::channel('actionlog')->info("Class: NewsService.update end");
         return $news;
     }
@@ -75,6 +79,7 @@ class NewsService
         $news = News::findOrFail($id);
         $news->delete();
 
+        Cache::tags(['all_news'])->flush();
         Log::channel('actionlog')->info("Class: NewsService.delete end");
     }
 }

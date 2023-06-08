@@ -24,3 +24,9 @@ services:
       - "8050:80"
     links:
       - php_fpm
+  cache:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    links:
+      - mysql

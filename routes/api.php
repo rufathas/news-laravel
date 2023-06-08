@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post("/news",[NewsController::class,'create']);
-Route::get("/news",[NewsController::class,'getAll']);
-Route::get("/news/{id}",[NewsController::class,'getOne']);
-Route::put("/news/{id}",[NewsController::class,'update']);
-Route::delete("/news/{id}",[NewsController::class,'delete']);
+Route::post("/news",[NewsController::class,'create'])->name("news.create");
+Route::get("/news",[NewsController::class,'getAll'])->name("news.getAll");
+Route::get("/news/{id}",[NewsController::class,'getOne'])->name("news.getOne");
+Route::put("/news/{id}",[NewsController::class,'update'])->name("news.update");
+Route::delete("/news/{id}",[NewsController::class,'delete'])->name("news.delete");
