@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewsCreateRequest;
 use App\Http\Resources\NewsResources;
 use App\Http\Services\NewsService;
-use Illuminate\Http\JsonResponse;
 
 class NewsController extends Controller
 {
@@ -16,17 +15,22 @@ class NewsController extends Controller
         $this->newsService = $newsService;
     }
 
-    public function create(NewsCreateRequest $request): JsonResponse
+    public function create(NewsCreateRequest $request): NewsResources
     {
-        $this->newsService->insert($request);
-        return response()->json(['message' => 'news created successful']);
+        return new NewsResources($this->newsService->insert($request));
     }
 
     public function getAll() {
         return NewsResources::collection($this->newsService->selectAll());
     }
 
-    public function getOne($id) {
+    public function getOne($id): NewsResources
+    {
         return new NewsResources($this->newsService->selectOne($id));
+    }
+
+    public function update($id, NewsCreateRequest $request): NewsResources
+    {
+        return new NewsResources($this->newsService->update($id,$request));
     }
 }
