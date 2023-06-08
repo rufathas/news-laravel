@@ -22,3 +22,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post("/news",[NewsController::class,'create']);
 Route::get("/news",[NewsController::class,'getAll']);
 Route::get("/news/{id}",[NewsController::class,'getOne']);
+Route::put("/news/{id}",[NewsController::class,'update']);
