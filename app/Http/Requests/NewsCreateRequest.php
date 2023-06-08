@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\ValidationErrorException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
@@ -48,9 +49,12 @@ class NewsCreateRequest extends FormRequest
     }
 
 
+    /**
+     * @throws ValidationErrorException
+     */
     protected function failedValidation(Validator $validator)
     {
         $errors = $validator->errors()->toArray();
-        dd($errors);
+        throw new ValidationErrorException($errors,400);
     }
 }
