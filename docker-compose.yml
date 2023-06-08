@@ -4,7 +4,7 @@ services:
   mysql:
     image: mysql:8.0
     ports:
-      - "33066:3306"
+      - "33061:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=hello_tv
@@ -24,3 +24,9 @@ services:
       - "8050:80"
     links:
       - php_fpm
+  cache:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    links:
+      - mysql
