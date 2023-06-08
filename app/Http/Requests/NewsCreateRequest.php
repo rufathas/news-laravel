@@ -29,8 +29,8 @@ class NewsCreateRequest extends FormRequest
         return [
             'status' => ['required', 'string',Rule::in(config('constants.news_status'))],
             'data' => ['required', 'array'],
-            'data.*.locale' => ['required', 'string'],
-            'data.*.title' => ['required', 'string'],
+            'data.*.locale' => ['required', 'string',Rule::in(config('translatable.locales'))],
+            'data.*.title' => ['required', 'string','max:255'],
             'data.*.description' => ['required', 'string'],
         ];
     }
@@ -45,6 +45,7 @@ class NewsCreateRequest extends FormRequest
         return [
             'title.required' => 'A title is required',
             'description.required' => 'A description is required',
+            'status.required' => 'A description is required'
         ];
     }
 
