@@ -15,11 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post("/news",[NewsController::class,'create']);
 Route::get("/news",[NewsController::class,'getAll']);
 Route::get("/news/{id}",[NewsController::class,'getOne']);
 Route::put("/news/{id}",[NewsController::class,'update']);
+Route::delete("/news/{id}",[NewsController::class,'delete']);

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\Rule;
 
 class NewsCreateRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class NewsCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => ['required', 'string'],
+            'status' => ['required', 'string',Rule::in(config('constants.news_status'))],
             'data' => ['required', 'array'],
             'data.*.locale' => ['required', 'string'],
             'data.*.title' => ['required', 'string'],
