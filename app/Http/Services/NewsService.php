@@ -24,4 +24,14 @@ class NewsService
             $news->translations()->save($newsTranslation);
         }
     }
+
+    public function selectAll()
+    {
+        return News::all();
+    }
+
+    public function selectOne($id)
+    {
+        return News::findOrFail($id);
+    }
 }
